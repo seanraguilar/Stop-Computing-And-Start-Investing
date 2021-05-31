@@ -1,0 +1,280 @@
+\documentclass{article}
+\begin{document}
+\title{When to Stop Computing and Start Investing}
+\author{Sean R. Aguilar and Olga Kosheleva\\
+		University of Texas at El Paso\\500 W. University\\
+		El Paso, TX 79968, USA\\sraguilar4@miners.utep.edu, olgak@utep.edu}
+\date{}
+\maketitle
+	
+\begin{abstract}
+	\textbf{Purpose:} The purpose of the study is to analyze when --
+while predicting the future price of a financial instrument -- we
+should stop computations and start using this information for the
+actual investment.
+	
+	\textbf{Design/methodology/approach:} We derive the explicit
+formulas explaining how the resulting gain depends on the duration
+of computations.
+
+	\textbf{Findings:} We provide an algorithm that enables us to
+decide the computation time that leads to the largest possible
+gain.
+	
+	\textbf{Originality/value:} To the best of our knowledge, this
+is the first solution to the problem. Following our recommendations
+will allow investors to select the computation time for which the
+resulting gain is the largest possible.
+	
+	\textbf{Keywords:} Investment; Optimal investment portfolio;
+Computation time.
+\end{abstract}
+	
+\section{Formulation of the Problem}
+
+\noindent{\bf Need for predictions.} The price of each stock --
+and, in general, of each financial instrument -- reflects the
+investors' prediction of how this particular instrument will
+change. If the market believes that the company will prosper, the
+price of its stock goes up; vice versa, in the market believes that
+the company will go into decline, the price of its stock goes down.
+
+Of course, these general market predictions are approximate. As a
+result, if some agent can come up with better predictions, this
+agent can make money. For example, if the agent's predictions are
+higher than the general market's, then it makes sense to buy this
+stock and then sell it with profit when its value increases above
+the market's expectations.
+
+For this purpose, trading companies use complex prediction
+algorithms, ranging from simple numerical models to deep learning;
+see, e.g., \cite{Goodfellow 2016}.
+\medskip
+
+\noindent{\bf When should we stop computing?} For most prediction
+algorithms, the more time we spend on computing, the more accurate
+are the predictions. For example, in machine learning algorithms --
+including deep learning -- the more data we use for prediction, the
+more accurate the predictions; however, the more data we use for prediction, 
+the longer the computations
+take.
+
+At first glance, it may seem that we should aim for the maximum
+possible prediction accuracy. However, if we are predicting tomorrow's
+price, and the computations of the most accurate prediction require
+more than 24 hours, then this prediction is useless. If computations take 23
+hours, then it is also possibly useless, since by then, most of the
+increase or decrease in price that we are trying to predict -- and which we plan to use to gain some profit -- would
+have already occurred.
+
+So what is the optimal computation time? When should we stop
+computing and start using the results of our computations to
+actually invest the money?
+\medskip
+
+\noindent{\bf What we do in this paper.} In this paper, on the example
+of a somewhat simplified model, we provide an answer to this
+question. 
+
+We hope that our solution will encourage researchers to solve
+this problem in a more general (and more realistic) setting.
+
+\section{Toward Formulating the Problem in Precise Terms}
+
+\noindent{\bf What is our objective.} Investments are risky.
+The more risk we tolerate, the more gain we can get. Usually, a
+investor selects how much risk he/she can tolerate, and tries to
+maximize the expected gain under this restriction on the risk.
+\medskip
+
+\noindent{\bf How can we gauge risk?} Investments are risky because
+the actual future value of the stock is, in general, different from
+our prediction estimate. The future price is not uniquely
+determined by today's knowledge and, thus, constitutes what is
+called a random variable. There is a natural way to gauge how
+different the values of a random variable can be -- we can estimate
+it by this variable's {\it standard deviation} $\sigma$ (or,
+alternatively, by its variance $V=\sigma^2$).
+
+Thus, a reasonable idea to describe an investor's tolerance to risk
+is to have an upper bound $\sigma_0$ on the corresponding standard
+deviation per-invested-dollar: $$\sigma\le \sigma_0.$$
+\medskip
+
+\noindent{\bf How the tolerated standard deviation depends on
+time-to-predicted-event.} If we are predicting the price of the instrument
+the next day, the change in the price is usually small, and thus,
+the corresponding deviation is small. On the other hand, if we are
+predicting next year's price, the changes may be large and thus,
+the standard deviation $\sigma$ will be large. In this case, the
+bound $\sigma_0$ should be larger.
+
+In general, the larger the time-to-predicted-event, the larger the
+corresponding standard deviation, and thus, the larger should be
+the corresponding bound. How can we describe the dependence
+$\sigma_0(t)$ of the tolerable standard deviation on the
+time-to-predicted-event $t$?
+
+Suppose that we have two consequent time intervals, of durations
+$t_1$ and $t_2$. Suppose that the investor tolerates the standard
+deviation $\sigma_0(t_1)$ for predictions over the first time
+interval, and the deviation $\sigma_0(t_2)$ for predictions over
+the second time interval. The change in price over the combined
+interval of duration $t_1+t_2$ is equal to the sum of the changes
+over the intervals of durations $t_1$ and~$t_2$.
+
+For stock market, fluctuations occurring during different time
+intervals are largely independent. It is known that the variance of
+the sum of two independent random variables is equal to the sum of
+their variances; see, e.g., \cite{Sheskin 2011}. Thus, the variance
+$\sigma_0^2(t_1+t_2)$ is equal to the sum of the corresponding
+variances: $$\sigma_0^2(t_1+t_2)=\sigma_0^2(t_1)+\sigma_0^2(t_2).$$
+From this condition, one can easily check that $\sigma_0^2(t)$ is a
+linear function of time: $\sigma_0^2(t)=k\cdot t$ for some constant
+$t$. Thus, we have $$\sigma_0(t)=s\cdot \sqrt{t},$$ where we
+denoted $s\stackrel{\rm def}{=}\sqrt{k}.$
+\medskip
+
+\noindent{\bf Let us formulate the problem in precise terms: what we know.}
+Suppose that we have a financial instrument -- e.g., a stock or a
+portfolio of stocks that closely follows the whole stock marker --
+that grows with the average rate $g$. This means that in a year, each
+invested dollar will grow by the amount $g$, and during the period
+of duration $t$, each invested dollar will grow by the amount
+$$b\cdot t.$$
+
+The risk corresponding to this financial instrument is usually larger than what 
+a investor can tolerate; so, the investors do not invest all their money
+in this instrument. To decrease the risk, they invest some of their money
+into this instrument, and the remaining amount of money into 
+a no-risk instrument (such as US bonds). If these bonds grow
+with the rate $b$, then, in a year, each dollar invested in bonds
+will grow by the amount $b$, and during the period of duration $t$,
+each invested dollar will grow by the amount $b\cdot t$.
+
+Suppose now that, according to the market's expectations -- which are 
+usually obtained simply by analyzing how the price changed in the past -- 
+the standard deviation of the change in the per-invested-dollar price of the selected financial
+instrument during time $t$ is equal to 
+$\sigma_m(t)=m\cdot \sqrt{t}$ for some value $m$; the square-root dependence of this standard
+deviation on time can be explained the same way as the dependence
+of the risk bound $\sigma_0(t)$ on time. 
+
+Suppose also that our prediction program, when asked
+to predict the price of the instrument $t$ moments in the future, after it has been 
+computing for time $t_c$, predicts the desired future price with
+accuracy $\sigma(t,t_c)$. The longer the
+computations last -- i.e., the larger the computation time $t_c$ -- the
+more accurate the predictions.
+
+The value $\sigma(t,t_c)$ can be estimated based on the ability of
+the software to predict the already observed prices.
+\medskip
+
+\noindent{\bf Let us formulate the problem in precise terms: what we want.}
+We want to find our at what time $t_c$ we should stop the
+computations and use this information for investment -- and what time period $t$ 
+should we use for predictions.
+\medskip
+
+\noindent{\bf Analysis of the problem.} At first, 
+while computations are still going on, to decide which portion $p$ of our money to invest in the
+given (risky) financial instrument, we can only use the general market's estimates for this instrument's standard
+deviation. 
+
+For each dollar,
+we invest the part $p$ in the risky financial instrument, and the
+remaining part $1-p$ in the bonds. Then, the expected per-invested-dollar gain is equal
+to $$p\cdot g\cdot t+(1-p)\cdot b\cdot t=b\cdot t+p\cdot (g-b)
+\cdot t.\eqno{(1)}$$ The portion $p$ is determined by the
+condition that this gain should be the largest possible under the
+condition that the risk is bounded by value $\sigma_0(t)=s\cdot
+\sqrt{t}$. 
+
+We use the market's estimate of the standard deviation of 1 dollar invested in the
+instrument. This estimate is $\sigma_m(t)=m\cdot \sqrt{t}$. So, the
+standard deviation of a $p$-dollars investment is equal to $p\cdot m\cdot
+\sqrt{t}$. Thus, the risk-related constraint takes the form
+$$p\cdot m\cdot \sqrt{t}\le s\cdot \sqrt{t},$$ i.e., equivalently,
+the form $p\le \displaystyle\frac{s}{m}.$
+
+The larger the portion $p$ invested in the risky financial instrument (such as stock(s)), the larger the
+expected return. Thus, under the given constraint, the largest
+possible value of the expected return is attained when the
+portion $p$ is the largest possible, i.e., when
+$p=\displaystyle\frac{s}{m}$. During the time $t_c$ -- while
+computations are going on -- we get the gain $$ b\cdot t_c+
+\frac{s}{m}\cdot(g-b)\cdot t_c.\eqno{(2)}$$
+
+At the moment $t_c$, we stop the computations and get the 
+estimate $\sigma(t,t_c)$. Since this is a more accurate estimate of the instrument's standard deviation
+than the market estimate that we previously used, it makes sense to take this new estimate into account and correspondingly re-calculate the portion of money invested
+in the instrument. In this case, the risk-related constraint takes the
+form $p\cdot \sigma(t,t_c)\le s\cdot \sqrt{t}$, hence $p\le
+\displaystyle\frac{s\cdot \sqrt{t}}{\sigma(t,t_c)}$. Thus, we
+the new portion $p_{\rm new}$ of money invested in the stock is equal to
+$$p_{\rm new}=\frac{s\cdot \sqrt{t}}{\sigma(t,t_c)},$$ and the resulting gain
+during the remaining time $t-t_c$ is equal to $$b\cdot (t-t_c)+
+\frac{s\cdot \sqrt{t}}{\sigma(t,t_c)}\cdot (g-b)\cdot (t-t_c).\eqno{(3)}$$
+By adding up the gains (2) and (3), we get the expression for the
+overall gain: $$b\cdot t+s\cdot (g-b)\cdot
+\left(\frac{t_c}{m}+
+\frac{(t-t_c)\cdot
+\sqrt{t}}{\sigma(t,t_c)}\right).\eqno{(4)}$$
+In particular, if we divide this amount by the time $t$, we get the
+following gain-per-unit-time $G$: $$G=b+s\cdot (g-b)\cdot
+\left(\frac{t_c}{t\cdot m}+\frac{t-t_c
+}{\sigma(t,t_c)\cdot\sqrt{t}}\right).\eqno{(5)}$$ 
+The largest value
+of this gain is attained for the values $t_c$ and $t$ for which the
+expression $$\frac{t_c}{t\cdot
+m}+\frac{t-t_c}{\sigma(t,t_c)\cdot\sqrt{t}}\eqno{(6)}$$ attains the
+largest possible value.
+
+\section{Resulting Recommendations}
+
+\noindent{\bf What is given.}
+\begin{itemize}
+\item We have a
+risk-free investment with the expected per-invested-dollar gain~$b$.
+\item We know how much risk the investor can tolerate. This
+knowledge is described by the value $s$ such that, when investing
+for a time $t$, the standard deviation of the change in the per-invested-dollar price of a
+portfolio should not exceed $s\cdot \sqrt{t}$.
+\item We also have a financial instrument with
+the expected per-invested-dollar gain $g$. This expected gain can be determined by analyzing the 
+previous prices (and gains) of this instrument.
+\item Based on these previous prices and gains, we can also determine the
+coefficient $m$ that describes the standard deviation
+$\sigma(t)$ of the change of the instrument's per-invested-dollar price during the time
+interval $t$: $$\sigma(t)\approx m\cdot\sqrt{t}.$$
+\item We also have a prediction algorithm. We can use this algorithm for predicting 
+the instrument's price $t$ moments into the future. We can run this algorithm for different amounts $t_c$ of computation time.
+Based on applying this
+algorithm to the previous data, for each amount $t_c$ of computation time, we estimate the standard deviation
+$\sigma(t,t_c)$ of the instrument's future per-invested-dollar price. 
+\end{itemize}
+\medskip
+
+\noindent{\bf Our recommendation.}
+The largest possible gain-per-unit-time occurs for the values $t$
+and $t_c$ for which the following expression attains the
+largest possible value: $$\frac{t_c}{t\cdot
+m}+\frac{t-t_c}{\sigma(t,t_c)\cdot\sqrt{t}}.\eqno{(6)}$$ The resulting gain-per-dollar-and-per-unit-time is equal
+to $$G=b+s\cdot (g-b)\cdot
+\left(\frac{t_c}{t\cdot m}+\frac{t-t_c
+}{\sigma(t,t_c)\cdot\sqrt{t}}\right).\eqno{(5)}$$
+
+\begin{thebibliography}{9}
+
+\bibitem{Goodfellow 2016} I. Goodfellow, Y. Bengio, and A.
+Courville, {\it Deep Learning}, MIT Press, Cambridge, Massachusetts,
+2016.
+
+\bibitem{Sheskin 2011}
+D. J. Sheskin, {\it Handbook of Parametric and Non-Parametric
+Statistical Procedures}, Chapman \& Hall/CRC, London, UK, 2011.
+
+\end{thebibliography}
+	
+\end{document}
